@@ -63,12 +63,12 @@ namespace BusStop
             {
                 return;
             }
-            int alpha;
-            if (!int.TryParse(textBox2.Text, out alpha))
+            double alpha;
+            if (!double.TryParse(textBox2.Text, out alpha))
             {
                 return;
             }
-            if (alpha <= 0)
+            if (alpha < 0)
             {
                 return;
             }
@@ -120,7 +120,7 @@ namespace BusStop
                     new_Passengers(rand.Next(1, 10), time);
                 }
 
-                var busRand = rand.NextDouble() + 0.1;
+                var busRand = rand.NextDouble();
                 if (busRand < exponential(time, gamma))
                 {
                     new_Bus(rand.Next(0, 3), time);
@@ -139,6 +139,8 @@ namespace BusStop
             listBox1.BeginUpdate();
             listBox1.Items.Add($"[{time}] {count} passengers arrived");
             listBox1.EndUpdate();
+
+            label6.Text = $"{int.Parse(label6.Text) + count}";
 
             bus_Queue(time);
         }
@@ -201,27 +203,18 @@ namespace BusStop
             bus_Queue(time);
         }
 
-        private double normal(int time, int alpha)
+        private double normal(int time, double alpha)
         {
             double first = 1 / Math.Sqrt(2 * Math.PI);
             double second = 1 / Math.Sqrt(Math.E);
-            second = Power(second, (time - alpha) * (time - alpha));
+            second = Math.Pow(second, (time - alpha) * (time - alpha));
             return first * second;
 
         }
 
         private double exponential(int time, int gamma)
         {
-            return 1 - 1 / Power(Math.E, time * gamma);
-        }
-
-        private double Power(double number, int power)
-        {
-            if (power <= 0)
-            {
-                return 1;
-            }
-            return number * Power(number, power - 1);
+            return 1 - 1 / Math.Pow(Math.E, time * gamma);
         }
     }
 }

@@ -9,3 +9,14 @@ D:\Documents\Programs\SSYP_20\BusStop\obj\Debug\BusStop.csproj.CoreCompileInputs
 D:\Documents\Programs\SSYP_20\BusStop\obj\Debug\BusStop.exe
 D:\Documents\Programs\SSYP_20\BusStop\obj\Debug\BusStop.pdb
 D:\Documents\Programs\SSYP_20\BusStop\obj\Debug\BusStop.Form2.resources
+D:\Documents\Programs\SSYP_20\SSYP2020_6\BusStop\bin\Debug\BusStop.exe.config
+D:\Documents\Programs\SSYP_20\SSYP2020_6\BusStop\bin\Debug\BusStop.exe
+D:\Documents\Programs\SSYP_20\SSYP2020_6\BusStop\bin\Debug\BusStop.pdb
+D:\Documents\Programs\SSYP_20\SSYP2020_6\BusStop\obj\Debug\BusStop.csprojAssemblyReference.cache
+D:\Documents\Programs\SSYP_20\SSYP2020_6\BusStop\obj\Debug\BusStop.Form1.resources
+D:\Documents\Programs\SSYP_20\SSYP2020_6\BusStop\obj\Debug\BusStop.Form2.resources
+D:\Documents\Programs\SSYP_20\SSYP2020_6\BusStop\obj\Debug\BusStop.Properties.Resources.resources
+D:\Documents\Programs\SSYP_20\SSYP2020_6\BusStop\obj\Debug\BusStop.csproj.GenerateResource.cache
+D:\Documents\Programs\SSYP_20\SSYP2020_6\BusStop\obj\Debug\BusStop.csproj.CoreCompileInputs.cache
+D:\Documents\Programs\SSYP_20\SSYP2020_6\BusStop\obj\Debug\BusStop.exe
+D:\Documents\Programs\SSYP_20\SSYP2020_6\BusStop\obj\Debug\BusStop.pdb
