@@ -9,6 +9,7 @@ namespace WindowsFormsApp2.src
             Texture = Properties.Resources.taxi;
             Capacity = 5;
             Speed = 120;
+            Brand = "Такси";
         }
     }
 }

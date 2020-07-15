@@ -14,24 +14,22 @@ namespace WindowsFormsApp2.src
             NowInTransport = nowInTransport;
         }
 
+        protected string Brand;
         public int Speed { get; protected set; }
         public int Capacity { get; protected set; }
         public int NowInTransport { get; protected set; }
         public Image Texture { get; protected set; }
         protected bool IsFilled = false;
 
-        public int PutPassengers(int pass)
+        public void PutPassengers(int pass)
         {
-            if (Capacity - NowInTransport <= pass)
-            {
-                IsFilled = true;
-                return pass - (Capacity - NowInTransport);
-            }
-            else
-            {
-                NowInTransport += pass;
-                return 0;
-            }
+            NowInTransport = (NowInTransport + pass >= Capacity) ? Capacity : NowInTransport + pass;
+        }
+
+        public string Info()
+        {
+            var info = $"{Brand}, свободно {Capacity - NowInTransport} мест.";
+            return info;
         }
     }
 }

@@ -14,6 +14,7 @@ namespace WindowsFormsApp2.src
             Texture = Properties.Resources.gazel;
             Capacity = 12;
             Speed = 70;
+            Brand = "Газель";
         }
     }
 }

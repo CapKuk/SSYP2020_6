@@ -13,6 +13,7 @@ namespace WindowsFormsApp2.src
             Texture = Properties.Resources.bus;
             Capacity = 30;
             Speed = 60;
+            Brand = "Автобус";
         }
     }
 }
