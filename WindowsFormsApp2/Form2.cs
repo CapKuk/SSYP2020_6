@@ -18,7 +18,7 @@ namespace WindowsFormsApp2
         private Random rand = new Random();
         private int People = 0;
         private int Time = 0;
-        private int TimeNow = 1;
+        private int EventTime = 1;
 
         public Form2()
         {
@@ -72,78 +72,69 @@ namespace WindowsFormsApp2
             chart1.Series["Транспорт"].Points.Clear();
             chart1.Series["Пассажиры"].Points.Clear();
             Time = durationBar.Value;
-            timer1.Enabled = true;
-            progressBar1.Maximum = Time;
             randBar.Enabled = false;
             durationBar.Enabled = false;
             AlphaBar.Enabled = false;
             GammaBar.Enabled = false;
             startButton.Enabled = false;
+            CoeffBar.Enabled = false;
+            for (var i = 0; i < durationBar.Value; i++)
+            {
+                CreateAndDoEvent();
+            }
+            Default();
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void CreateAndDoEvent()
         {
-            if (TimeNow == Time)
+            var newEventTime = EventTime;
+            Event newEvent = RandomEvent();
+            if (newEvent == Event.PassegerCame)
             {
-                timer1.Enabled = false;
-                Default();
-                return;
+                newEventTime = EventTime + Math.Abs((int)(normal(EventTime, AlphaBar.Value) * CoeffBar.Value * 100));
+                newEventTime = (newEventTime == EventTime) ? newEventTime + 1 : newEventTime;
+                People += rand.Next(5, 20);
+                PeopleLb.Text = People.ToString();
+                
             }
-            if (rand.Next(0, randBar.Value) < normal(TimeNow, AlphaBar.Value))
+            else if (newEvent == Event.TransportArrived)
             {
-                People += rand.Next(0, 15);
-                peopleCount.Text = People.ToString();
+                newEventTime = EventTime + Math.Abs((int)(exp(EventTime, GammaBar.Value) * CoeffBar.Value));
+                newEventTime = (newEventTime == EventTime) ? newEventTime + 1 : newEventTime;
+                Transports.Enqueue(RandomTransport());
             }
-            if (rand.NextDouble() < exp(TimeNow, GammaBar.Value))
+            else return;
+
+            for (var i = EventTime; i < newEventTime; i++)
             {
-                PublicTransport trans = null;
-                switch (rand.Next(0, 3))
-                {
-                    case 0:
-                        trans = new Bus();
-                        break;
-                    case 1:
-                        trans = new Taxi();
-                        break;
-                    case 2:
-                        trans = new Gazelle();
-                        break;
-                }
-                var lv = new ListViewItem(Text = trans.Info());
-                listViewTransport.Items.Add(lv);
-                Transports.Enqueue(trans);
+                chart1.Series["Транспорт"].Points.AddXY(i, Transports.Count);
+                chart1.Series["Пассажиры"].Points.AddXY(i, People);
             }
-            chart1.Series["Пассажиры"].Points.AddXY(TimeNow, People);
-            chart1.Series["Транспорт"].Points.AddXY(TimeNow, Transports.Count);
-            DistributePassengers();
-            TimeNow++;
-            progressBar1.Value = TimeNow;
+            EventTime = newEventTime;
         }
 
-        private void DistributePassengers()
+        private Event RandomEvent()
         {
-            while (People != 0 && Transports.Count != 0)
-            {
-                ChangePeopleAtState();
-            }
+            var newEvent = rand.Next(0, 2);
+            return (newEvent == (int)Event.PassegerCame) ? Event.PassegerCame : Event.TransportArrived;
         }
 
-        private void ChangePeopleAtState()
+        private PublicTransport RandomTransport()
         {
-            var transport = Transports.Peek();
-            if (People >= transport.Capacity - transport.NowInTransport)
+            PublicTransport trans = null;
+            switch (rand.Next(0, 3))
             {
-                People -= (transport.Capacity - transport.NowInTransport);
-                Transports.Dequeue();
-                listViewTransport.Items[0].Remove();
-
+                case 0:
+                    trans = new Bus();
+                    break;
+                case 1:
+                    trans = new Taxi();
+                    break;
+                case 2:
+                    trans = new Gazelle();
+                    break;
             }
-            else
-            {
-                transport.PutPassengers(People);
-                People = 0;
-                listViewTransport.Items[0].Text = transport.Info();
-            }
+            return trans;
         }
 
         private void Default()
@@ -153,10 +144,15 @@ namespace WindowsFormsApp2
             AlphaBar.Enabled = true;
             GammaBar.Enabled = true;
             startButton.Enabled = true;
-
-            People = 0;
+            CoeffBar.Enabled = true;
             Transports = new Queue<PublicTransport>();
-            TimeNow = 1;
+            People = 0;
+            EventTime = 0;
+        }
+
+        private void CoeffBar_Scroll(object sender, EventArgs e)
+        {
+            Coeff.Text = CoeffBar.Value.ToString();
         }
     }
 }
