@@ -9,6 +9,8 @@ namespace ShopWinForms
         public int Price { get; set; }
         public static List<Purchase> PurchaseSet = new List<Purchase>
         {new Purchase("Хлеб", 50), new Purchase("Молоко", 60), new Purchase("Вода", 30), new Purchase("Яйца", 40), new Purchase("Печенье", 100)};
+        public static short SetCount = 5;
+        public static Random rand = new Random();
 
         public Purchase(string name, int price)
         {
@@ -18,8 +20,7 @@ namespace ShopWinForms
 
         public static Purchase GenerateRandomPurchase()
         {
-            var rand = new Random();
-            return PurchaseSet[rand.Next(0, PurchaseSet.Count)];
+            return PurchaseSet[rand.Next(0, SetCount)];
         }
 
         public string Info()

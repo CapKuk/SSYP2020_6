@@ -11,6 +11,8 @@ namespace ShopWinForms
         public string Name { get; set; }
         public Dictionary<Purchase, int> CheckList = new Dictionary<Purchase, int>();
         public static List<string> CustomerNames = new List<string> { "Сергей", "Настя", "Маша", "Кирилл", "Антон", "Гена" };
+        public static Random rand = new Random();
+
 
         public Customer(string name)
         {
@@ -21,7 +23,6 @@ namespace ShopWinForms
         {
             Purchase pr = null;
             int count = 0;
-            var rand = new Random();
             var cstmr = new Customer(CustomerNames[rand.Next(0, CustomerNames.Count)]);
             var countPurchase = rand.Next(1, 10);
             for (var i = 0; i < countPurchase; i++)

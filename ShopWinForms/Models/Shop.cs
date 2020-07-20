@@ -16,27 +16,24 @@ namespace ShopWinForms
 
         private void GenerateCustomersForCashier()
         {
-            var count = rand.Next(3, 15) * DurationWorkDay * Cashiers.Count;
+            var count = rand.Next(3, 15) * DurationWorkDay;
             for (var i = 0; i < count; i++)
             {
-                var cashier = MinimumQueue();
-                cashier.Customers.Enqueue(Customer.GenrateRandomCustomer());
+                MinimumQueue().Customers.Enqueue(Customer.GenrateRandomCustomer());
             }
         }
 
         private Cashier MinimumQueue()
         {
-            Cashier cashier = null;
             int minQueue = Cashiers.Min(i => i.Customers.Count);
             foreach (var i in Cashiers)
             {
                 if (i.Customers.Count == minQueue)
                 {
-                    cashier = i;
-                    break;
+                    return i;
                 }
             }
-            return cashier;
+            return null;
         }
 
         private void PutUpSellers(List<int> speeds)
@@ -52,13 +49,16 @@ namespace ShopWinForms
             if (TimeNow < DurationWorkDay)
             {
                 TimeNow++;
-                GenerateCustomersForCashier();
-                foreach (var cashier in Cashiers)
+                for (var i = 0; i < Cashiers.Count; i++)
                 {
-                    cashier.CalculateClientsOneHour();
+                    GenerateCustomersForCashier();
+                    foreach (var cashier in Cashiers)
+                    {
+                        cashier.CalculateClientsOneHour();
+                    }
+                    ChangeProfit();
+                    ChangeClientsProcessed();
                 }
-                ChangeProfit();
-                ChangeClientsProcessed();
                 return;
             }
             SimulationEnded = true;
