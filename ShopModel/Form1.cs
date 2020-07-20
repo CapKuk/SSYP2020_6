@@ -54,10 +54,11 @@ namespace ShopModel
         }
 
 
-        public event Action<int[]> ButtonClicked;
+        public event Action<string[], int[]> ButtonClicked;
 
         private void button1_Click(object sender, EventArgs e)
         {
+            var sellersName = new string[dataGridView1.Rows.Count];
             var sellersSpeed = new int[dataGridView1.Rows.Count];
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
@@ -65,12 +66,19 @@ namespace ShopModel
                 {
                     continue;
                 }
+
+                sellersName[row.Index] = row.Cells[0].Value.ToString();
+
                 if (!int.TryParse(row.Cells[1].Value.ToString(), out sellersSpeed[row.Index]))
                 {
                     return;
                 }
+                if (sellersSpeed[row.Index] < 0)
+                {
+                    return;
+                }
             }
-            ButtonClicked(sellersSpeed);
+            ButtonClicked(sellersName, sellersSpeed);
         }
     }
 }

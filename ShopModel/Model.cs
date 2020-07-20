@@ -65,11 +65,23 @@ namespace ShopModel
             "Bacon"
         };
 
+        private int[] productsPrices = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
         private Purchase RandomPurchaseGenerator()
         {
             var rand = new Random();
-            var productName = Products[rand.Next(0, Products.Length - 1)];
-            var price = rand.Next(1, 100);
+            var productIndex = rand.Next(0, Products.Length - 1);
+            var productName = Products[productIndex];
+            var price = 0;
+            if (productsPrices[productIndex] == 0)
+            {
+                price = rand.Next(1, 100);
+                productsPrices[productIndex] = price;
+            }
+            else
+            {
+                price = productsPrices[productIndex];
+            }
             return new Purchase(productName, price);
         }
 
@@ -79,7 +91,8 @@ namespace ShopModel
             var name = rand.Next(1, 50).ToString();
             var purchases = new Dictionary<Purchase, int>();
             var countOfPurchases = 0;
-            while (countOfPurchases < 5)
+            var maxCountOfPurchases = rand.Next(3, 7);
+            while (countOfPurchases < maxCountOfPurchases)
             {
                 var purchase = RandomPurchaseGenerator();
                 if (purchases.ContainsKey(purchase))
@@ -93,23 +106,26 @@ namespace ShopModel
             return new Customer(name, purchases);
         }
 
-        public void SpeedToCountOfPurchases(int[] speeds)
+        public void SpeedToCountOfPurchases(string[] names, int[] speeds)
         {
             var countOfPurchases = new int[speeds.Length];
             for (int i = 0; i < speeds.Length; i++)
             {
                 countOfPurchases[i] = speeds[i] * 60 * time;
             }
-            ButtonClickedCalculate(countOfPurchases);
+            ButtonClickedCalculate(names, countOfPurchases);
         }
 
+        public event Action OpenLogsWindow;
+        public event Action<string> AddDataToLogs;
         public event Action<int, int> OpenResultWindow;
 
-        private void ButtonClickedCalculate(int[] countOfPurchases)
+        private void ButtonClickedCalculate(string[] sellersNames, int[] countOfPurchases)
         {
             var profit = 0;
             var countOfCustomers = 0;
-            foreach (var sellerTime in countOfPurchases)
+            OpenLogsWindow();
+            for (int i = 0; i < countOfPurchases.Length; i++)
             {
                 var sellerCountOfPurchases = 0;
                 while (true)
@@ -122,16 +138,27 @@ namespace ShopModel
                         customerCountOfPurchases += kvp.Value;
                         customerProfit += kvp.Key.Price * kvp.Value;
                     }
-                    if (sellerTime < customerCountOfPurchases + sellerCountOfPurchases)
+                    if (countOfPurchases[i] < customerCountOfPurchases + sellerCountOfPurchases)
                     {
                         break;
                     }
                     sellerCountOfPurchases += customerCountOfPurchases;
                     profit += customerProfit;
                     countOfCustomers++;
+                    AddDataToLogs(CustomerDataToLogs(sellersNames[i], customer));
                 }
             }
             OpenResultWindow(countOfCustomers, profit);
+        }
+
+        private string CustomerDataToLogs(string sellerName, Customer customer)
+        {
+            var text = $"Seller <{sellerName}>: New customer <{customer.Name}> with purchases ";
+            foreach (KeyValuePair<Purchase, int> kvp in customer.Purchases)
+            {
+                text += $"{kvp.Key.Name}: {kvp.Key.Price}*{kvp.Value} ";
+            }
+            return text;
         }
     }
 }

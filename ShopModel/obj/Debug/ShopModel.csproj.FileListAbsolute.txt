@@ -9,3 +9,4 @@ D:\Documents\Programs\SSYP_20\SSYP2020_6\ShopModel\bin\Debug\ShopModel.pdb
 D:\Documents\Programs\SSYP_20\SSYP2020_6\ShopModel\obj\Debug\ShopModel.exe
 D:\Documents\Programs\SSYP_20\SSYP2020_6\ShopModel\obj\Debug\ShopModel.pdb
 D:\Documents\Programs\SSYP_20\SSYP2020_6\ShopModel\obj\Debug\ShopModel.Form2.resources
+D:\Documents\Programs\SSYP_20\SSYP2020_6\ShopModel\obj\Debug\ShopModel.Logs.resources
