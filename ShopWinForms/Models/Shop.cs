@@ -16,7 +16,7 @@ namespace ShopWinForms
 
         private void GenerateCustomersForCashier()
         {
-            var count = rand.Next(3, 15) * DurationWorkDay;
+            var count = rand.Next(3, 15) * Cashiers.Count;
             for (var i = 0; i < count; i++)
             {
                 MinimumQueue().Customers.Enqueue(Customer.GenrateRandomCustomer());
@@ -49,16 +49,13 @@ namespace ShopWinForms
             if (TimeNow < DurationWorkDay)
             {
                 TimeNow++;
-                for (var i = 0; i < Cashiers.Count; i++)
+                GenerateCustomersForCashier();
+                foreach (var cashier in Cashiers)
                 {
-                    GenerateCustomersForCashier();
-                    foreach (var cashier in Cashiers)
-                    {
-                        cashier.CalculateClientsOneHour();
-                    }
-                    ChangeProfit();
-                    ChangeClientsProcessed();
+                    cashier.CalculateClientsOneHour();
                 }
+                ChangeProfit();
+                ChangeClientsProcessed();
                 return;
             }
             SimulationEnded = true;

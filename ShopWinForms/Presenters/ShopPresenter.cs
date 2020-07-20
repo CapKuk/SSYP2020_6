@@ -11,7 +11,6 @@ namespace ShopWinForms
     {
         public static event Action<Shop> ResultReceived;
         private Shop Model;
-        public (int, int) result;
 
         public ShopPresenter()
         {

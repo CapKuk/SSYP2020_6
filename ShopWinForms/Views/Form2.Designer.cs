@@ -35,7 +35,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.progress = new System.Windows.Forms.ProgressBar();
-            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label2
@@ -86,22 +85,11 @@
             this.progress.Size = new System.Drawing.Size(207, 23);
             this.progress.TabIndex = 4;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(288, 321);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(597, 368);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.progress);
             this.Controls.Add(this.profit);
             this.Controls.Add(this.label2);
@@ -121,6 +109,5 @@
         private System.Windows.Forms.Label label1;
         public System.Windows.Forms.Timer timer1;
         public System.Windows.Forms.ProgressBar progress;
-        private System.Windows.Forms.Button button1;
     }
 }
