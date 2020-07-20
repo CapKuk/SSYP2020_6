@@ -21,5 +21,10 @@ namespace ShopWinForms
             var rand = new Random();
             return PurchaseSet[rand.Next(0, PurchaseSet.Count)];
         }
+
+        public string Info()
+        {
+            return $"Продукт: {Name}, по цене {Price}";
+        }
     }
 }

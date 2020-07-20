@@ -9,7 +9,7 @@ namespace ShopWinForms
 {
     class ShopPresenter : IPresenter
     {
-        public static event Action<int, int> ResultReceived;
+        public static event Action<Shop> ResultReceived;
         private Shop Model;
         public (int, int) result;
 
@@ -23,15 +23,14 @@ namespace ShopWinForms
             Form1.CalculateClick += Calculate;
         }
 
-        private void Calculate(int sellersCount, int speed, int duration)
+        private void Calculate(List<int> speeds, int duration)
         {
-            CreateModel(sellersCount, speed, duration);
-            result = Model.ServiceResults();
-            ResultReceived(result.Item1, result.Item2);
+            CreateModel(speeds, duration);
+            ResultReceived(Model);
         }
-        private void CreateModel(int sellersCount, int speed, int duration)
+        private void CreateModel(List<int> speeds, int duration)
         {
-            Model = new Shop(duration, sellersCount, speed);
+            Model = new Shop(speeds, duration);
         }
 
         public void Run()

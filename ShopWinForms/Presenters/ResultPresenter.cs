@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,20 +10,31 @@ namespace ShopWinForms
 {
     class ResultPresenter : IPresenter
     {
-        private int customers = 0;
-        private int profit = 0;
-
-        public ResultPresenter(int customers, int profit)
+        private Shop Model = null;
+        private Form2 newWindow = new Form2();
+        
+        public ResultPresenter(Shop model)
         {
-            this.customers = customers;
-            this.profit = profit;
+            Model = model;
+            newWindow.progress.Maximum = model.DurationWorkDay + 1;
+            Form2.TimerTick += SimulationOfWorkingHours;
+        }
+
+        private void SimulationOfWorkingHours()
+        {
+            if (Model.SimulationEnded)
+            {
+                newWindow.timer1.Enabled = false;
+                return;
+            }
+            Model.SimulateOneHourWork();
+            newWindow.count.Text = Model.ClientsProcessed.ToString();
+            newWindow.profit.Text = Model.Profit.ToString();
+            newWindow.progress.Value += 1;
         }
 
         public void Run()
         {
-            var newWindow = new Form2();
-            newWindow.count.Text = customers.ToString();
-            newWindow.profit.Text = profit.ToString();
             newWindow.ShowDialog();
         }
     }

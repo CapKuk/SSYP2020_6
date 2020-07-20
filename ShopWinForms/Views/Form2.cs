@@ -12,9 +12,16 @@ namespace ShopWinForms
 {
     public partial class Form2 : Form
     {
+        public static event Action TimerTick;
+
         public Form2()
         {
             InitializeComponent();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            TimerTick();
         }
     }
 }

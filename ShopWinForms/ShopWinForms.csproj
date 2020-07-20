@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Cashier.cs" />
     <Compile Include="Presenters\IPresenter.cs" />
     <Compile Include="Presenters\PresenterController.cs" />
     <Compile Include="Presenters\ResultPresenter.cs" />

@@ -8,68 +8,81 @@ namespace ShopWinForms
 {
     class Shop
     {
-        public Shop(int durationWorkDay, int SellersCount, int SellersSpeed)
+        public Shop(List<int> speeds, int duration)
         {
-            DurationWorkDay = durationWorkDay;
-            PutUpSellers(SellersCount, SellersSpeed);
-            GenerateCustomes();
+            DurationWorkDay = duration;
+            PutUpSellers(speeds);
         }
 
-        private void GenerateCustomes()
+        private void GenerateCustomersForCashier()
         {
-            var count = rand.Next(3, 15) * DurationWorkDay;
+            var count = rand.Next(3, 15) * DurationWorkDay * Cashiers.Count;
             for (var i = 0; i < count; i++)
             {
-                CustomerTurn.Enqueue(Customer.GenrateRandomCustomer());
+                var cashier = MinimumQueue();
+                cashier.Customers.Enqueue(Customer.GenrateRandomCustomer());
             }
         }
 
-        private void PutUpSellers(int sellersCount, int sellersSpeed)
+        private Cashier MinimumQueue()
         {
-            for (int i = 0; i < sellersCount; i++)
+            Cashier cashier = null;
+            int minQueue = Cashiers.Min(i => i.Customers.Count);
+            foreach (var i in Cashiers)
             {
-                Sellers.Add(new Seller(Seller.SellerNames[rand.Next(0, 10)], sellersSpeed));
+                if (i.Customers.Count == minQueue)
+                {
+                    cashier = i;
+                    break;
+                }
+            }
+            return cashier;
+        }
+
+        private void PutUpSellers(List<int> speeds)
+        {
+            for (int i = 0; i < speeds.Count; i++)
+            {
+                Cashiers.Add(new Cashier(new Seller(Seller.SellerNames[rand.Next(0, 10)], speeds[i])));
             }
         }
 
+        public void SimulateOneHourWork()
+        {
+            if (TimeNow < DurationWorkDay)
+            {
+                TimeNow++;
+                GenerateCustomersForCashier();
+                foreach (var cashier in Cashiers)
+                {
+                    cashier.CalculateClientsOneHour();
+                }
+                ChangeProfit();
+                ChangeClientsProcessed();
+                return;
+            }
+            SimulationEnded = true;
+        }
+
+        private void ChangeProfit()
+        {
+            Profit = 0;
+            foreach (var cashier in Cashiers) Profit += cashier.profit;
+        }
+
+        private void ChangeClientsProcessed()
+        {
+            ClientsProcessed = 0;
+            foreach (var cashier in Cashiers) ClientsProcessed += cashier.ClientsProcessed;
+        }
+
+        public int ClientsProcessed = 0;
+        public int Profit = 0;
         public Random rand = new Random();
-        public List<Seller> Sellers = new List<Seller>();
+        public List<Cashier> Cashiers = new List<Cashier>();
         public int DurationWorkDay { get; set; }
-        private Queue<Customer> CustomerTurn = new Queue<Customer>();
+        private double TimeNow = 0;
+        public bool SimulationEnded = false;
 
-        public (int, int) ServiceResults()
-        {
-            var profit = 0;
-            var overallSpeed = CalculateTheTotalSpeedOfSellers();
-            double time = 0;
-            int customers = 0;
-            while (time < DurationWorkDay && CustomerTurn.Count != 0)
-            {
-                var res = ServiceTime(CustomerTurn.Dequeue(), overallSpeed);
-                time += res.Item1;
-                profit += res.Item2;
-                customers += 1;
-            }
-            return (customers, profit);
-        }
-
-        private int CalculateTheTotalSpeedOfSellers()
-        {
-            var result = 0;
-            Sellers.ForEach(i => result += i.Speed);
-            return result;
-        }
-
-        private (double, int) ServiceTime(Customer customer, int overallSpeed)
-        {
-            var profit = 0;
-            var items = 0;
-            foreach (KeyValuePair<Purchase, int> entry in customer.CheckList)
-            {
-                items += entry.Value;
-                profit += entry.Value * entry.Key.Price;
-            }
-            return ((double)items / overallSpeed, profit);
-        }
     }
 }

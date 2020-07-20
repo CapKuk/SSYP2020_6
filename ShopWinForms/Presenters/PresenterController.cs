@@ -20,9 +20,9 @@ namespace ShopWinForms
             firstWindow.Run();
         }
 
-        private void RunSecondWindow(int customers, int profit)
+        private void RunSecondWindow(Shop shop)
         {
-            var secondWindow = new ResultPresenter(customers, profit);
+            var secondWindow = new ResultPresenter(shop);
             secondWindow.Run();
         }
     }
