@@ -17,7 +17,6 @@ namespace ShopModel
         {
             Form = new Form1();
             MainModel = new Model();
-            LogsWindow = new Logs();
 
             Form.SellersCountChanged += MainModel.NewCountOfSellers;
             MainModel.LessCountOfSellers += Form.RemoveCountOfSellers;
@@ -28,14 +27,20 @@ namespace ShopModel
             Form.ButtonClicked += MainModel.SpeedToCountOfPurchases;
 
             MainModel.OpenLogsWindow += OpenLogsWindow;
-            MainModel.AddDataToLogs += LogsWindow.AddDataToLogs;
+            MainModel.AddDataToLogs += AddDataToLogs;
 
             MainModel.OpenResultWindow += OpenResult;
         }
 
         private void OpenLogsWindow()
         {
+            LogsWindow = new Logs();
             LogsWindow.Show();
+        }
+
+        private void AddDataToLogs(string text)
+        {
+            LogsWindow.AddDataToLogs(text);
         }
 
         private void OpenResult(int count, int profit)

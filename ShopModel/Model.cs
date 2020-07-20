@@ -67,9 +67,8 @@ namespace ShopModel
 
         private int[] productsPrices = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-        private Purchase RandomPurchaseGenerator()
+        private Purchase RandomPurchaseGenerator(Random rand)
         {
-            var rand = new Random();
             var productIndex = rand.Next(0, Products.Length - 1);
             var productName = Products[productIndex];
             var price = 0;
@@ -85,16 +84,15 @@ namespace ShopModel
             return new Purchase(productName, price);
         }
 
-        private Customer RandomCustomerGenerator()
+        private Customer RandomCustomerGenerator(Random rand)
         {
-            var rand = new Random();
             var name = rand.Next(1, 50).ToString();
             var purchases = new Dictionary<Purchase, int>();
             var countOfPurchases = 0;
             var maxCountOfPurchases = rand.Next(3, 7);
             while (countOfPurchases < maxCountOfPurchases)
             {
-                var purchase = RandomPurchaseGenerator();
+                var purchase = RandomPurchaseGenerator(rand);
                 if (purchases.ContainsKey(purchase))
                 {
                     continue;
@@ -125,12 +123,13 @@ namespace ShopModel
             var profit = 0;
             var countOfCustomers = 0;
             OpenLogsWindow();
+            var rand = new Random();
             for (int i = 0; i < countOfPurchases.Length; i++)
             {
                 var sellerCountOfPurchases = 0;
                 while (true)
                 {
-                    var customer = RandomCustomerGenerator();
+                    var customer = RandomCustomerGenerator(rand);
                     var customerCountOfPurchases = 0;
                     var customerProfit = 0;
                     foreach (KeyValuePair<Purchase, int> kvp in customer.Purchases)
